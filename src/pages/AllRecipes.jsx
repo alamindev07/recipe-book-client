@@ -1,135 +1,153 @@
-
-
-// import { useEffect, useState } from "react";
-
-// const AllRecipes = () => {
-//   const [recipes, setRecipes] = useState([]);
-//   const [cuisineFilter, setCuisineFilter] = useState("");
-
-//   useEffect(() => {
-//     const fetchRecipes = async () => {
-//       try {
-//         const res = await fetch("http://localhost:5000/api/recipes");
-//         const data = await res.json();
-//         setRecipes(data);
-//       } catch (err) {
-//         console.error("Failed to load recipes:", err);
-//       }
-//     };
-
-//     fetchRecipes();
-//   }, []);
-
-//   const filteredRecipes = cuisineFilter
-//     ? recipes.filter((r) => r.cuisine === cuisineFilter)
-//     : recipes;
-
-//   const cuisines = [...new Set(recipes.map((r) => r.cuisine))];
-
-//   return (
-//     <div className="max-w-6xl mx-auto p-4">
-//       <h2 className="text-3xl font-bold mb-4">All Recipes</h2>
-
-//       <div className="mb-4">
-//         <select
-//           className="select select-bordered"
-//           value={cuisineFilter}
-//           onChange={(e) => setCuisineFilter(e.target.value)}
-//         >
-//           <option value="">All Cuisines</option>
-//           {cuisines.map((cuisine, idx) => (
-//             <option key={idx} value={cuisine}>
-//               {cuisine}
-//             </option>
-//           ))}
-//         </select>
-//       </div>
-
-//       <div className="grid md:grid-cols-3 gap-6">
-//         {filteredRecipes.map((recipe) => (
-//           <div key={recipe._id} className="card bg-base-100 shadow-xl">
-//             <figure>
-//               <img src={recipe.image} alt={recipe.title} className="w-full h-48 object-cover" />
-//             </figure>
-//             <div className="card-body">
-//               <h2 className="card-title">{recipe.title}</h2>
-//               <p className="text-sm text-gray-500">{recipe.cuisine}</p>
-//               <p>{recipe.description}</p>
-//             </div>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default AllRecipes;
-
-
-
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { FaClock, FaHeart, FaUtensils } from "react-icons/fa";
+import { MdFilterList } from "react-icons/md";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 
 const AllRecipes = () => {
   const [recipes, setRecipes] = useState([]);
-  const [filtered, setFiltered] = useState([]);
-  const [cuisineFilter, setCuisineFilter] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [selectedCuisine, setSelectedCuisine] = useState("");
+  const [search, setSearch] = useState("");
 
-  useEffect(() => {
-    axios.get("http://localhost:5000/recipes")
-      .then(res => {
-        setRecipes(res.data);
-        setFiltered(res.data);
-      });
-  }, []);
 
-  useEffect(() => {
-    if (cuisineFilter === "") {
-      setFiltered(recipes);
-    } else {
-      const filteredData = recipes.filter(recipe => recipe.cuisine === cuisineFilter);
-      setFiltered(filteredData);
-    }
-  }, [cuisineFilter, recipes]);
+
+
+  // before useEffect
+const fetchRecipes = async () => {
+  try {
+    const res = await axios.get("http://localhost:5000/recipes");
+    setRecipes(res.data);
+    setLoading(false);
+  } catch (error) {
+    console.error("Error fetching recipes:", error);
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetchRecipes();
+}, []);
+
+
+
+  const filteredRecipes = recipes.filter((recipe) => {
+    const matchesCuisine =
+      !selectedCuisine || recipe.cuisine === selectedCuisine;
+    const matchesSearch = recipe.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    return matchesCuisine && matchesSearch;
+  });
+
+  const cuisineTypes = ["Italian", "Mexican", "Indian", "Chinese", "Others"];
+
+  const handleLike = async (id) => {
+  try {
+    // await axios.patch(`http://localhost:5000/recipe/like/${id}`);
+    await axios.patch(`http://localhost:5000/recipes/like/${id}`);
+
+Swal.fire({
+  title: "Liked!",
+  icon: "success",
+  draggable: true
+});
+    // Refresh data after like
+    fetchRecipes();
+  } catch (error) {
+    toast.error("Failed to like");
+  }
+};
 
   return (
-    <div className="px-4 py-8 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center">All Recipes</h1>
+    <div className="px-4 py-8">
+      {/* Top Bar */}
+      <div className="bg-gradient-to-r from-orange-500 to-orange-400 rounded-xl p-4 md:p-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 shadow-md">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+          <h1 className="text-3xl md:text-4xl font-bold text-white">All Recipes</h1>
+          <Link to="/add-recipe" className="btn btn-primary text-white btn-sm">
+            + Add Recipe
+          </Link>
+        </div>
 
-      {/* Cuisine Filter */}
-      <div className="mb-6 text-center">
-        <select
-          onChange={(e) => setCuisineFilter(e.target.value)}
-          className="select select-bordered w-full max-w-xs"
-          defaultValue=""
-        >
-          <option value="">All Cuisines</option>
-          <option value="Italian">Italian</option>
-          <option value="Mexican">Mexican</option>
-          <option value="Indian">Indian</option>
-          <option value="Chinese">Chinese</option>
-          <option value="Others">Others</option>
-        </select>
+        <div className="flex flex-wrap gap-3 items-center">
+          {/* Cuisine Filter */}
+          <div className="dropdown dropdown-hover">
+            <label tabIndex={0} className="btn bg-white text-orange-600 font-semibold">
+              <MdFilterList className="mr-1" /> All Cuisines
+            </label>
+            <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-white rounded-box w-52">
+              <li><button onClick={() => setSelectedCuisine("")}>All</button></li>
+              {cuisineTypes.map((cuisine) => (
+                <li key={cuisine}>
+                  <button onClick={() => setSelectedCuisine(cuisine)}>{cuisine}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Search */}
+          <input
+            type="text"
+            placeholder="Search recipes..."
+            className="input input-sm rounded-full w-48"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+
+          <p className="text-white font-semibold">
+            {filteredRecipes.length} recipes found
+          </p>
+        </div>
       </div>
 
-      {/* Recipes Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {filtered.map(recipe => (
-          <div key={recipe._id} className="card bg-base-100 shadow-md border border-gray-100">
-            <figure><img src={recipe.image} alt={recipe.title} className="h-48 w-full object-cover" /></figure>
-            <div className="card-body">
-              <h2 className="card-title">{recipe.title}</h2>
-              <p><strong>Cuisine:</strong> {recipe.cuisine}</p>
-              <p><strong>Time:</strong> {recipe.prepTime} mins</p>
-              <p><strong>Likes:</strong> {recipe.likes}</p>
-              <div className="card-actions justify-end">
-                <Link to={`/recipes/${recipe._id}`} className="btn btn-sm btn-primary">See Details</Link>
+      {/* Recipe Grid */}
+      {loading ? (
+        <div className="text-center mt-10">Loading recipes...</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
+          {filteredRecipes.map((recipe) => (
+            <div key={recipe._id} className="card bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all">
+              <img src={recipe.image} alt={recipe.title} className="w-full h-48 object-cover" />
+              <div className="p-4 space-y-2">
+                <h2 className="text-lg font-bold">{recipe.title}</h2>
+                <div className="flex items-center gap-4 text-sm text-gray-600">
+                  <span className="flex items-center gap-1"><FaClock /> {recipe.preparationTime} mins</span>
+                  <span className="flex items-center gap-1"><FaUtensils /> {recipe.cuisineType}</span>
+                </div>
+                <p className="text-sm text-gray-500 font-medium">By: {recipe?.user?.name || "Unknown"}</p>
+
+                {/* Categories */}
+                <div className="flex flex-wrap gap-1 mt-2">
+                  {recipe.categories?.map((cat, i) => (
+                    <span
+                      key={i}
+                      className="bg-orange-100 text-orange-600 px-2 py-1 text-xs rounded-full"
+                    >
+                      {cat}
+                    </span>
+                  ))}
+                </div>
+
+                <div className="flex justify-between items-center mt-4">
+                  <Link
+                    to={`/recipes/${recipe._id}`}
+                    className="btn btn-sm bg-orange-500 text-white"
+                  >
+                    Details
+                  </Link>
+                  <button onClick={() => handleLike(recipe._id)} className="btn btn-sm bg-orange-100 text-orange-600">
+                    <FaHeart className="mr-1" /> {recipe.likeCount || 0}
+                  </button>
+
+                </div>
               </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
