@@ -46,7 +46,7 @@ useEffect(() => {
 
   const handleLike = async (id) => {
   try {
-    // await axios.patch(`http://localhost:5000/recipe/like/${id}`);
+    
     await axios.patch(`http://localhost:5000/recipes/like/${id}`);
 
 Swal.fire({

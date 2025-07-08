@@ -4,12 +4,15 @@
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { motion } from "framer-motion";
+import Swal from "sweetalert2";
+
 
 const MyRecipes = () => {
   const { user } = useContext(AuthContext);
   const [myRecipes, setMyRecipes] = useState([]);
   const [editingRecipe, setEditingRecipe] = useState(null);
-    const [loading, setLoading] = useState(true);
+const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user?.email) {
@@ -33,31 +36,40 @@ const MyRecipes = () => {
     }
   };
 
-  const handleUpdate = async (e) => {
-    e.preventDefault();
-    const form = e.target;
 
-    const updatedRecipe = {
-      title: form.title.value,
-      image: form.image.value,
-      preparationTime: form.preparationTime.value,
-      cuisineType: form.cuisineType.value,
-    };
+const handleUpdate = async (e) => {
+  e.preventDefault();
+  const form = e.target;
 
-    try {
-      await axios.put(`http://localhost:5000/recipes/${editingRecipe._id}`, updatedRecipe);
-      setMyRecipes((prev) =>
-        prev.map((r) =>
-          r._id === editingRecipe._id ? { ...r, ...updatedRecipe } : r
-        )
-      );
-      setEditingRecipe(null);
-      
-    } catch (err) {
-      console.error("Update failed:", err);
-   
-    }
+  const updatedRecipe = {
+    title: form.title.value,
+    image: form.image.value,
+    preparationTime: form.preparationTime.value,
+    cuisineType: form.cuisineType.value,
   };
+
+  try {
+    await axios.put(
+      `http://localhost:5000/recipes/${editingRecipe._id}`,
+      updatedRecipe
+    );
+    setMyRecipes((prev) =>
+      prev.map((r) =>
+        r._id === editingRecipe._id ? { ...r, ...updatedRecipe } : r
+      )
+    );
+    setEditingRecipe(null);
+    Swal.fire({
+      title: "Recipe updated successfully!",
+      icon: "success",
+      draggable: true
+    });
+  } catch (err) {
+    console.error("Update failed:", err);
+    toast.error("Failed to update recipe!");
+  }
+};
+
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
@@ -93,48 +105,88 @@ const MyRecipes = () => {
       )}
 
       {/* Update Modal */}
+    
+
+
       {editingRecipe && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-            <h3 className="text-xl font-semibold mb-4">Update Recipe</h3>
-            <form onSubmit={handleUpdate}>
-              <input
-                name="title"
-                defaultValue={editingRecipe.title}
-                className="input input-bordered w-full mb-2"
-                required
-              />
-              <input
-                name="image"
-                defaultValue={editingRecipe.image}
-                className="input input-bordered w-full mb-2"
-                required
-              />
-              <input
-                name="preparationTime"
-                defaultValue={editingRecipe.preparationTime}
-                type="number"
-                className="input input-bordered w-full mb-2"
-                required
-              />
-              <input
-                name="cuisineType"
-                defaultValue={editingRecipe.cuisineType}
-                className="input input-bordered w-full mb-4"
-                required
-              />
-              <div className="flex justify-end gap-2">
-                <button type="button" className="btn" onClick={() => setEditingRecipe(null)}>
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
+  <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
+    <motion.div
+      initial={{ scale: 0.8, opacity: 0 }}
+      animate={{ scale: 1, opacity: 1 }}
+      exit={{ scale: 0.8, opacity: 0 }}
+      transition={{ duration: 1.0 }}
+      className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
+    >
+      <h3 className="text-xl font-bold mb-4 text-center text-blue-600">
+        ✏️ Update Recipe
+      </h3>
+      <form onSubmit={handleUpdate} className="space-y-4">
+        <div>
+          <label className="label">
+            <span className="label-text">Title</span>
+          </label>
+          <input
+            name="title"
+            defaultValue={editingRecipe.title}
+            className="input input-bordered w-full"
+            required
+          />
         </div>
-      )}
+
+        <div>
+          <label className="label">
+            <span className="label-text">Image URL</span>
+          </label>
+          <input
+            name="image"
+            defaultValue={editingRecipe.image}
+            className="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="label">
+            <span className="label-text">Preparation Time (mins)</span>
+          </label>
+          <input
+            name="preparationTime"
+            type="number"
+            defaultValue={editingRecipe.preparationTime}
+            className="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="label">
+            <span className="label-text">Cuisine Type</span>
+          </label>
+          <input
+            name="cuisineType"
+            defaultValue={editingRecipe.cuisineType}
+            className="input input-bordered w-full"
+            required
+          />
+        </div>
+
+        <div className="flex justify-end gap-3 pt-4">
+          <button
+            type="button"
+            onClick={() => setEditingRecipe(null)}
+            className="btn btn-outline"
+          >
+            Cancel
+          </button>
+          <button type="submit" className="btn btn-primary">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </motion.div>
+  </div>
+)}
+
     </div>
   );
 };
