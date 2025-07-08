@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const linkClass = ({ isActive }) =>
     isActive
-      ? "text-primary font-semibold underline underline-offset-4"
+      ? "text-primary font-semibold underline-offset-4 bg-green-400 p-1 rounded-md  border-b-2 border-primary"
       : "hover:text-primary transition-colors";
 
   const navLinks = (
@@ -48,7 +48,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="bg-base-100 shadow-md px-4 py-2 sticky top-0 z-50">
+    <nav className="bg-gradient-to-r from-amber-200 to-orange-300 bg-base-200 shadow-md px-4 py-2 sticky top-0 z-50">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold text-primary">
@@ -58,7 +58,7 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
           {navLinks}
-          <ThemeToggle />
+          
           {user ? (
             <div className="dropdown dropdown-end">
               <div tabIndex={0} className="btn btn-ghost btn-circle avatar">
@@ -76,7 +76,7 @@ const Navbar = () => {
                   <p className="text-center font-semibold">{user.displayName}</p>
                 </li>
                 <li>
-                  <button onClick={handleLogout}>Logout</button>
+                  <button className="btn btn-sm btn-error" onClick={handleLogout}>Logout</button>
                 </li>
               </ul>
             </div>
@@ -90,6 +90,8 @@ const Navbar = () => {
               </Link>
             </div>
           )}
+
+          <ThemeToggle />
         </div>
 
         {/* Mobile Toggle */}
@@ -101,6 +103,7 @@ const Navbar = () => {
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
+          <ThemeToggle />
         </div>
       </div>
 
@@ -108,7 +111,7 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden mt-2 bg-base-100 p-4 rounded-lg shadow space-y-2">
           <div className="flex flex-col space-y-2">{navLinks}</div>
-          <ThemeToggle />
+          
           {user ? (
             <>
               <p className="text-center font-semibold">{user.displayName}</p>
@@ -133,4 +136,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
