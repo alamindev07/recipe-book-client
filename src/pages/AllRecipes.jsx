@@ -106,7 +106,9 @@ Swal.fire({
       {/* Recipe Grid */}
       {loading ? (
         <div className="text-center mt-10"><span className="loading loading-spinner text-error"></span>Loading recipes...</div>
-      ) : (
+      ) : filteredRecipes.length === 0 ? (
+        <p className="text-center text-lg lg:text-2xl text-red-600 mt-5" >No recipes found.</p>
+      ): (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
           {filteredRecipes.map((recipe) => (
             <div key={recipe._id} className="card bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all">
