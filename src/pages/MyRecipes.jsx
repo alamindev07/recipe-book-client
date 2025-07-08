@@ -9,13 +9,15 @@ const MyRecipes = () => {
   const { user } = useContext(AuthContext);
   const [myRecipes, setMyRecipes] = useState([]);
   const [editingRecipe, setEditingRecipe] = useState(null);
+    const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user?.email) {
       axios
         .get(`http://localhost:5000/recipes?email=${user.email}`)
         .then((res) => setMyRecipes(res.data))
-        .catch((err) => console.error("Failed to fetch recipes:", err));
+        .catch((err) => console.error("Failed to fetch recipes:", err))
+        .finally(() => setLoading(false));
     }
   }, [user?.email]);
 
@@ -50,8 +52,10 @@ const MyRecipes = () => {
         )
       );
       setEditingRecipe(null);
+      
     } catch (err) {
       console.error("Update failed:", err);
+   
     }
   };
 
@@ -59,8 +63,9 @@ const MyRecipes = () => {
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h2 className="text-3xl font-bold mb-6">My Recipes ({myRecipes.length})</h2>
 
-      {myRecipes.length === 0 ? (
-        <p>No recipes found.</p>
+      {loading? (        <div className="text-center mt-10"><span className="loading loading-spinner text-error"></span>Loading recipes...</div>
+): myRecipes.length === 0 ? (
+        <p className="text-center text-lg lg:text-2xl text-red-600" >No recipes found.</p>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {myRecipes.map((recipe) => (

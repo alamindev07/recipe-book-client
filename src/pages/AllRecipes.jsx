@@ -62,7 +62,7 @@ Swal.fire({
 };
 
   return (
-    <div className="px-4 py-8">
+    <div className="px-4 py-2">
       {/* Top Bar */}
       <div className="bg-gradient-to-r from-orange-500 to-orange-400 rounded-xl p-4 md:p-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 shadow-md">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
@@ -105,7 +105,7 @@ Swal.fire({
 
       {/* Recipe Grid */}
       {loading ? (
-        <div className="text-center mt-10">Loading recipes...</div>
+        <div className="text-center mt-10"><span className="loading loading-spinner text-error"></span>Loading recipes...</div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
           {filteredRecipes.map((recipe) => (
@@ -138,6 +138,8 @@ Swal.fire({
                   >
                     Details
                   </Link>
+                 
+
                   <button onClick={() => handleLike(recipe._id)} className="btn btn-sm bg-orange-100 text-orange-600">
                     <FaHeart className="mr-1" /> {recipe.likeCount || 0}
                   </button>
