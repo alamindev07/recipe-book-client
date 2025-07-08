@@ -40,7 +40,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
 import AddRecipe from "../pages/AddRecipe";
-import RecipeDetails from "../pages/RecipeDetails";
+// import RecipeDetails from "../pages/RecipeDetails";
 import MyRecipes from "../pages/MyRecipes";
 import NotFound from "../pages/NotFound";
 // import Layout from "../layout/Layout";
@@ -78,7 +78,7 @@ const router = createBrowserRouter([
         path: "/recipes/:id",
         element: (
           <PrivateRoute>
-            <RecipeDetails />
+            {/* <RecipeDetails /> */}
           </PrivateRoute>
         ),
       },
