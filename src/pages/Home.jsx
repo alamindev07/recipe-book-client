@@ -89,12 +89,25 @@ const Home = () => {
                 <h2 className="card-title">{recipe.title}</h2>
                 <p>Cuisine: {recipe.cuisineType}</p>
                 <p>Likes: ❤️ {recipe.likeCount}</p>
-                <button className="btn btn-outline btn-sm mt-2">View Details</button>
+                  <Link
+                    to={`/recipes/${recipe._id}`}
+                    className="btn btn-outline btn-sm mt-1 hover:bg-orange-500 "
+                  >
+                   View Details
+                  </Link>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+
+       <div className="text-center my-10">
+        <Link to="/all-recipes" className="btn btn-outline btn-primary rounded-full bg-orange-500">
+          See All Recipes
+        </Link>
+      </div>
+
 
       {/* Testimonials Section */}
       <div className="my-16 px-4 max-w-6xl mx-auto">
@@ -115,11 +128,7 @@ const Home = () => {
       </div>
 
 
-        <div className="text-center my-10">
-        <Link to="/all-recipes" className="btn btn-outline btn-primary">
-          See All Recipes
-        </Link>
-      </div>
+       
 
 
 
