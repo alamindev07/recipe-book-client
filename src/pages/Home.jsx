@@ -9,6 +9,9 @@ import { Link } from "react-router";
 import { MdOutlineRestaurant } from "react-icons/md";
 import { FaFireAlt } from "react-icons/fa";
 
+import image1 from "../assets/babu.jpg";
+import image2 from "../assets/alamin.jpg";
+
 import BannerSlider from "./BannerSlider";
 
 
@@ -16,8 +19,8 @@ import BannerSlider from "./BannerSlider";
 
 
 const testimonials = [
-  { name: "Babu", message: "This site helped me cook better!", avatar: "/user1.jpg" },
-  { name: "AL-Amin", message: "Amazing recipes and great UI!", avatar: "/user2.jpg" },
+  { name: "Babu", message: "This site helped me cook better!", avatar: image1 },
+  { name: "AL-Amin", message: "Amazing recipes and great UI!", avatar: image2 },
 ];
 
 const Home = () => {
@@ -74,7 +77,7 @@ const Home = () => {
 
 
        <div className="text-center my-10">
-        <Link to="/all-recipes" className="btn btn-outline btn-primary rounded-full bg-orange-500">
+        <Link to="/all-recipes" className="btn btn-outline btn-primary rounded-full bg-orange-500 text-black">
           See All Recipes
         </Link>
       </div>
@@ -89,8 +92,8 @@ const Home = () => {
               <div className="flex items-center gap-4">
                 <img src={t.avatar} className="w-12 h-12 rounded-full" alt={t.name} />
                 <div>
-                  <p className="font-semibold">{t.name}</p>
-                  <p className="text-sm text-gray-600">{t.message}</p>
+                  <p className="font-semibold text-orange-400">{t.name}</p>
+                  <p className="text-sm  text-blue-600">{t.message}</p>
                 </div>
               </div>
             </div>
@@ -101,9 +104,9 @@ const Home = () => {
 
       
       {/* Extra Section 1: About */}
-      <div className="my-16 text-center bg-base-300 rounded-xl py-10 px-4">
-        <h3 className="text-2xl font-semibold mb-3">Why Choose Recipe Book?</h3>
-        <p className="max-w-2xl mx-auto ">
+      <div className="my-16 text-center rounded-xl py-10 px-4 shadow-sm bg-white">
+        <h3 className="text-2xl font-semibold mb-3 text-orange-500">Why Choose Recipe Book?</h3>
+        <p className="max-w-2xl mx-auto  text-green-400">
           Recipe Book is your personal kitchen companion! Store, share, and discover delicious
           recipes from all around the world with a beautiful and easy-to-use interface.
         </p>
@@ -113,17 +116,17 @@ const Home = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mt-10">
         <div className="p-6 border rounded-lg shadow-sm bg-white">
           <MdOutlineRestaurant className="text-4xl text-primary mx-auto mb-3" />
-          <h4 className="font-bold text-lg mb-1">1000+ Recipes</h4>
+          <h4 className="font-bold text-lg mb-1 text-orange-500">1000+ Recipes</h4>
           <p className="text-sm text-gray-600">Explore cuisines and meals from around the globe.</p>
         </div>
         <div className="p-6 border rounded-lg shadow-sm bg-white">
           <FaFireAlt className="text-4xl text-red-500 mx-auto mb-3" />
-          <h4 className="font-bold text-lg mb-1">Trending Now</h4>
+          <h4 className="font-bold text-lg mb-1 text-orange-500">Trending Now</h4>
           <p className="text-sm text-gray-600">Like and discover the most popular recipes.</p>
         </div>
         <div className="p-6 border rounded-lg shadow-sm bg-white">
           <MdOutlineRestaurant className="text-4xl text-green-500 mx-auto mb-3" />
-          <h4 className="font-bold text-lg mb-1">Your Recipe Vault</h4>
+          <h4 className="font-bold text-lg mb-1 text-orange-500">Your Recipe Vault</h4>
           <p className="text-sm text-gray-600">Save and manage your personal recipe collection.</p>
         </div>
       </div>
