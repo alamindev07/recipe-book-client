@@ -4,12 +4,14 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { toast } from "react-toastify";
 import { Menu, X } from "lucide-react";
-import ThemeToggle from "../../pages/ThemeToggle";
+// import { useTheme } from "../../context/ThemeContext";
+import ThemeToggle from "../ThemeToggle";
 
 
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  // const { homeTheme, setHomeTheme } = useTheme();
 
   const handleLogout = async () => {
     try {
@@ -23,7 +25,7 @@ const Navbar = () => {
 
   const linkClass = ({ isActive }) =>
     isActive
-      ? "text-primary font-semibold underline-offset-4 bg-orange-400 p-1 rounded-md  border-b-2 border-primary"
+      ? "text-primary font-semibold underline-offset-4 bg-green-400 p-1 rounded-md  border-b-2 border-primary"
       : "hover:text-white transition-colors";
 
   const navLinks = (
@@ -91,7 +93,8 @@ const Navbar = () => {
             </div>
           )}
 
-          <ThemeToggle />
+          {/* <ThemeToggle /> */}
+          <ThemeToggle/>
         </div>
 
         {/* Mobile Toggle */}
@@ -103,7 +106,7 @@ const Navbar = () => {
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
-          <ThemeToggle />
+              <ThemeToggle/>
         </div>
       </div>
 

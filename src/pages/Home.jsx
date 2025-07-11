@@ -13,6 +13,9 @@ import image1 from "../assets/babu.jpg";
 import image2 from "../assets/alamin.jpg";
 
 import BannerSlider from "./BannerSlider";
+import { useTheme } from "../context/ThemeContext";
+
+
 
 
 
@@ -25,6 +28,7 @@ const testimonials = [
 
 const Home = () => {
   const [topRecipes, setTopRecipes] = useState([]);
+ const { homeTheme } = useTheme();
 
   useEffect(() => {
     AOS.init({ duration: 800 });
@@ -37,10 +41,24 @@ const Home = () => {
   }, []);
 
 
+
+
+
+
+
+
   return (
-    <div>
+
+    <div className={`min-h-screen transition-all duration-300 ${
+        homeTheme === "dark" ? "bg-[#1a1a1a] text-white" : "bg-white text-black"
+      }`}>
+ <div className="flex justify-end p-4">
+ 
+      </div>
 
         <div>
+
+
           {/* banner section start */}
       <BannerSlider />
      
@@ -53,7 +71,7 @@ const Home = () => {
           {topRecipes.map((recipe) => (
             <div
               key={recipe._id}
-              className="card bg-base-100 shadow-xl"
+              className="card bg-base-500 shadow-xl"
               data-aos="fade-up"
             >
               <figure>
@@ -137,7 +155,4 @@ const Home = () => {
 };
 
 export default Home;
-
-
-
 

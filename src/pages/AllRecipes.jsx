@@ -38,16 +38,24 @@ useEffect(() => {
   fetchRecipes();
 }, []);
 
+const filteredRecipes = recipes.filter((recipe) => {
+  const matchesCuisine =
+    !selectedCuisine || recipe.cuisineType === selectedCuisine; // FIXED HERE
+  const matchesSearch = recipe.title
+    .toLowerCase()
+    .includes(search.toLowerCase());
+  return matchesCuisine && matchesSearch;
+});
 
 
-  const filteredRecipes = recipes.filter((recipe) => {
-    const matchesCuisine =
-      !selectedCuisine || recipe.cuisine === selectedCuisine;
-    const matchesSearch = recipe.title
-      .toLowerCase()
-      .includes(search.toLowerCase());
-    return matchesCuisine && matchesSearch;
-  });
+  // const filteredRecipes = recipes.filter((recipe) => {
+  //   const matchesCuisine =
+  //     !selectedCuisine || recipe.cuisine === selectedCuisine;
+  //   const matchesSearch = recipe.title
+  //     .toLowerCase()
+  //     .includes(search.toLowerCase());
+  //   return matchesCuisine && matchesSearch;
+  // });
 
   const cuisineTypes = ["Italian", "Mexican", "Indian", "Chinese", "Others"];
 
@@ -80,7 +88,7 @@ Swal.fire({
         </div>
 
         <div className="flex flex-wrap gap-3 items-center">
-          
+
           {/* Cuisine Filter */}
           <div className="relative">
   <button
@@ -95,11 +103,20 @@ Swal.fire({
       <li>
         <button onClick={() => handleCuisineSelect("")}>All</button>
       </li>
+
       {cuisineTypes.map((cuisine) => (
-        <li key={cuisine}>
-          <button onClick={() => handleCuisineSelect(cuisine)}>{cuisine}</button>
-        </li>
-      ))}
+  <li key={cuisine}>
+    <button
+      onClick={() => handleCuisineSelect(cuisine)}
+      className={`w-full text-left px-2 py-1 rounded ${
+        selectedCuisine === cuisine ? "bg-orange-100 font-semibold" : ""
+      }`}
+    >
+      {cuisine}
+    </button>
+  </li>
+))}
+
     </ul>
   )}
 </div>

@@ -1,2 +1,11 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* styles.css or your global CSS */
+.home-dark {
+  @apply bg-custom-dark text-white;
+}
+
+.home-light {
+  @apply bg-custom-light text-black;
+}
