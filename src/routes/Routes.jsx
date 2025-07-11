@@ -14,6 +14,7 @@ import NotFound from "../pages/NotFound";
 import PrivateRoute from "./PrivateRoute";
 import MainLayout from "../layouts/MainLayout";
 import AllRecipes from "../pages/AllRecipes";
+import UpdateRecipe from "../pages/UpdateRecipe";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,16 @@ const router = createBrowserRouter([
           </PrivateRoute>
         ),
       },
+      {
+        path: "/update-recipe/:id",
+        element: (
+          <PrivateRoute>
+            <UpdateRecipe />
+          </PrivateRoute>
+        ),
+      },
+     
+
     ],
   },
 ]);
