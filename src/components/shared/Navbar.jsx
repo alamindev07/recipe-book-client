@@ -23,8 +23,8 @@ const Navbar = () => {
 
   const linkClass = ({ isActive }) =>
     isActive
-      ? "text-primary font-semibold underline-offset-4 bg-green-400 p-1 rounded-md  border-b-2 border-primary"
-      : "hover:text-primary transition-colors";
+      ? "text-primary font-semibold underline-offset-4 bg-orange-400 p-1 rounded-md  border-b-2 border-primary"
+      : "hover:text-white transition-colors";
 
   const navLinks = (
     <>
@@ -48,7 +48,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="bg-gradient-to-r from-amber-200 to-orange-300 bg-base-200 shadow-md px-4 py-2 sticky top-0 z-50">
+    <nav className="bg-gradient-to-r from-purple-500 to-pink-500 bg-base-200 shadow-md px-4 py-2 sticky top-0 z-50">
       <div className="container mx-auto flex items-center justify-between">
         {/* Logo */}
         <Link to="/" className="text-2xl font-bold text-primary">
@@ -82,7 +82,7 @@ const Navbar = () => {
             </div>
           ) : (
             <div className="space-x-2">
-              <Link to="/login" className="btn btn-sm btn-outline btn-info">
+              <Link to="/login" className="btn btn-outline btn-accent btn-sm">
                 Login
               </Link>
               <Link to="/register" className="btn btn-sm btn-success">
@@ -121,10 +121,10 @@ const Navbar = () => {
             </>
           ) : (
             <div className="flex flex-col space-y-2">
-              <Link to="/login" className="btn btn-sm btn-outline btn-info">
+              <Link onClick={() => setIsMenuOpen(false)} to="/login" className="btn  btn-sm btn-outline btn-info">
                 Login
               </Link>
-              <Link to="/register" className="btn btn-sm btn-success">
+              <Link onClick={() => setIsMenuOpen(false)} to="/register" className="btn btn-sm btn-success">
                 Register
               </Link>
             </div>
