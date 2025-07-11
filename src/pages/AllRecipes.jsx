@@ -12,6 +12,13 @@ const AllRecipes = () => {
   const [selectedCuisine, setSelectedCuisine] = useState("");
   const [search, setSearch] = useState("");
 
+const [isCuisineOpen, setIsCuisineOpen] = useState(false);
+
+// Modify the handler to close the dropdown
+const handleCuisineSelect = (cuisine) => {
+  setSelectedCuisine(cuisine);
+  setIsCuisineOpen(false); 
+};
 
 
 
@@ -73,20 +80,30 @@ Swal.fire({
         </div>
 
         <div className="flex flex-wrap gap-3 items-center">
+          
           {/* Cuisine Filter */}
-          <div className="dropdown dropdown-hover">
-            <label tabIndex={0} className="btn bg-white text-orange-600 font-semibold">
-              <MdFilterList className="mr-1" /> All Cuisines
-            </label>
-            <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-white rounded-box w-52">
-              <li><button onClick={() => setSelectedCuisine("")}>All</button></li>
-              {cuisineTypes.map((cuisine) => (
-                <li key={cuisine}>
-                  <button onClick={() => setSelectedCuisine(cuisine)}>{cuisine}</button>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <div className="relative">
+  <button
+    onClick={() => setIsCuisineOpen(!isCuisineOpen)}
+    className="btn bg-white text-orange-600 font-semibold flex items-center"
+  >
+    <MdFilterList className="mr-1" /> {selectedCuisine || "All Cuisines"}
+  </button>
+
+  {isCuisineOpen && (
+    <ul className="absolute z-10 mt-2 w-52 bg-white shadow rounded-box p-2">
+      <li>
+        <button onClick={() => handleCuisineSelect("")}>All</button>
+      </li>
+      {cuisineTypes.map((cuisine) => (
+        <li key={cuisine}>
+          <button onClick={() => handleCuisineSelect(cuisine)}>{cuisine}</button>
+        </li>
+      ))}
+    </ul>
+  )}
+</div>
+
 
           {/* Search */}
           <input

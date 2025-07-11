@@ -74,7 +74,7 @@ const RecipeDetails = () => {
         
      <div className="flex justify-between">
            <button
-  className="btn btn-outline mb-4 hover:bg-blue-500 bg-amber-400"
+  className="btn btn-outline mb-4 hover:bg-blue-500 bg-orange-500 rounded-full"
   onClick={() => navigate(-1)} // Go back to previous page
 >
   ← Back

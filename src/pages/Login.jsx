@@ -1,13 +1,18 @@
-
 import { useContext, useState } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { toast } from "react-hot-toast";
+import { getAuth } from "firebase/auth";
+import app from "../firebase/firebase.config";
+
+const auth = getAuth(app);
 
 const Login = () => {
   const { loginWithEmailPassword, signInWithGoogle } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,12 +20,30 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError("");
+
     try {
       await loginWithEmailPassword(email, password);
       toast.success("Login successful!");
       navigate(from, { replace: true });
     } catch (err) {
-      toast.error("Login failed: " + err.message);
+      // console.error("Firebase Error Code:", err.code);
+      if (
+        err.code === "auth/user-not-found" ||
+        err.code === "auth/invalid-email"
+      ) {
+        setError("Please check your Email & Password and Try again");
+      } else if (
+        err.code === "auth/wrong-password" ||
+        err.code === "auth/invalid-credential"
+      ) {
+        setError("Please check your Email & Password and Try again");
+      } else {
+        setError("Login failed! Please try again with correct Email and Password.");
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -55,6 +78,7 @@ const Login = () => {
         {/* Right Panel */}
         <div className="md:w-1/2 w-full p-8 bg-white">
           <h2 className="text-2xl font-bold text-gray-800 mb-6">Sign In</h2>
+
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
               <label className="block text-gray-700 mb-1 font-medium">Email address</label>
@@ -64,6 +88,7 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full border border-orange-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                required
               />
             </div>
             <div>
@@ -74,14 +99,23 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full border border-orange-300 rounded px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                required
               />
             </div>
-           
+
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+
             <button
               type="submit"
-              className="w-full bg-gradient-to-r from-orange-400 to-orange-500 text-white py-2 rounded hover:opacity-90 transition flex items-center justify-center gap-2"
+              disabled={loading}
+              className={`w-full text-white py-2 rounded flex items-center justify-center gap-2 transition ${
+                loading
+                  ? "bg-orange-300 cursor-not-allowed"
+                  : "bg-gradient-to-r from-orange-400 to-orange-500 hover:opacity-90"
+              }`}
             >
-              <span className="material-icons">login</span> Sign in
+              <span className="material-icons">login</span>
+              {loading ? "Logging in..." : "Sign in"}
             </button>
           </form>
 
