@@ -25,7 +25,7 @@ const Navbar = () => {
 
   const linkClass = ({ isActive }) =>
     isActive
-      ? "text-primary font-semibold underline-offset-4 bg-green-400 p-1 rounded-md  border-b-2 border-primary"
+      ? "text-primary font-semibold underline-offset-4 bg-green-500 p-1 rounded-lg  border-b-2 border-primary"
       : "hover:text-white transition-colors";
 
   const navLinks = (

@@ -5,6 +5,7 @@ import { FaClock, FaHeart, FaUtensils } from "react-icons/fa";
 import { MdFilterList } from "react-icons/md";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const AllRecipes = () => {
   const [recipes, setRecipes] = useState([]);
@@ -12,115 +13,112 @@ const AllRecipes = () => {
   const [selectedCuisine, setSelectedCuisine] = useState("");
   const [search, setSearch] = useState("");
 
-const [isCuisineOpen, setIsCuisineOpen] = useState(false);
+  const [isCuisineOpen, setIsCuisineOpen] = useState(false);
 
-// Modify the handler to close the dropdown
-const handleCuisineSelect = (cuisine) => {
-  setSelectedCuisine(cuisine);
-  setIsCuisineOpen(false); 
-};
-
-
+  // Modify the handler to close the dropdown
+  const handleCuisineSelect = (cuisine) => {
+    setSelectedCuisine(cuisine);
+    setIsCuisineOpen(false);
+  };
 
   // before useEffect
-const fetchRecipes = async () => {
-  try {
-    const res = await axios.get("http://localhost:5000/recipes");
-    setRecipes(res.data);
-    setLoading(false);
-  } catch (error) {
-    console.error("Error fetching recipes:", error);
-    setLoading(false);
-  }
-};
+  const fetchRecipes = async () => {
+    try {
+      const res = await axios.get(
+        "https://recipe-book-server-five.vercel.app/recipes"
+      );
+      setRecipes(res.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Error fetching recipes:", error);
+      setLoading(false);
+    }
+  };
 
-useEffect(() => {
-  fetchRecipes();
-}, []);
+  useEffect(() => {
+    fetchRecipes();
+  }, []);
 
-const filteredRecipes = recipes.filter((recipe) => {
-  const matchesCuisine =
-    !selectedCuisine || recipe.cuisineType === selectedCuisine; // FIXED HERE
-  const matchesSearch = recipe.title
-    .toLowerCase()
-    .includes(search.toLowerCase());
-  return matchesCuisine && matchesSearch;
-});
-
-
-  // const filteredRecipes = recipes.filter((recipe) => {
-  //   const matchesCuisine =
-  //     !selectedCuisine || recipe.cuisine === selectedCuisine;
-  //   const matchesSearch = recipe.title
-  //     .toLowerCase()
-  //     .includes(search.toLowerCase());
-  //   return matchesCuisine && matchesSearch;
-  // });
+  const filteredRecipes = recipes.filter((recipe) => {
+    const matchesCuisine =
+      !selectedCuisine || recipe.cuisineType === selectedCuisine;
+    const matchesSearch = recipe.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+    return matchesCuisine && matchesSearch;
+  });
 
   const cuisineTypes = ["Italian", "Mexican", "Indian", "Chinese", "Others"];
 
   const handleLike = async (id) => {
-  try {
-    
-    await axios.patch(`http://localhost:5000/recipes/like/${id}`);
+    try {
+      await axios.patch(
+        `https://recipe-book-server-five.vercel.app/recipes/like/${id}`
+      );
 
-Swal.fire({
-  title: "Liked!",
-  icon: "success",
-  draggable: true
-});
-    // Refresh data after like
-    fetchRecipes();
-  } catch (error) {
-    toast.error("Failed to like");
-  }
-};
+      Swal.fire({
+        title: "Liked!",
+        icon: "success",
+        draggable: true,
+      });
+      // Refresh data after like
+      fetchRecipes();
+    } catch (error) {
+      toast.error("Failed to like");
+    }
+  };
 
   return (
     <div className="px-4 py-2">
+      <Helmet>
+        <title>AllRecipes - Recipe Book</title>
+      </Helmet>
+
       {/* Top Bar */}
       <div className="bg-gradient-to-r from-orange-500 to-orange-400 rounded-xl p-4 md:p-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 shadow-md">
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
-          <h1 className="text-3xl md:text-4xl font-bold text-white">All Recipes</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-white">
+            All Recipes
+          </h1>
           <Link to="/add-recipe" className="btn btn-primary text-white btn-sm">
             + Add Recipe
           </Link>
         </div>
 
         <div className="flex flex-wrap gap-3 items-center">
-
           {/* Cuisine Filter */}
           <div className="relative">
-  <button
-    onClick={() => setIsCuisineOpen(!isCuisineOpen)}
-    className="btn bg-white text-orange-600 font-semibold flex items-center"
-  >
-    <MdFilterList className="mr-1" /> {selectedCuisine || "All Cuisines"}
-  </button>
+            <button
+              onClick={() => setIsCuisineOpen(!isCuisineOpen)}
+              className="btn bg-white text-orange-600 font-semibold flex items-center"
+            >
+              <MdFilterList className="mr-1" />{" "}
+              {selectedCuisine || "All Cuisines"}
+            </button>
 
-  {isCuisineOpen && (
-    <ul className="absolute z-10 mt-2 w-52 bg-white shadow rounded-box p-2">
-      <li>
-        <button onClick={() => handleCuisineSelect("")}>All</button>
-      </li>
+            {isCuisineOpen && (
+              <ul className="absolute z-10 mt-2 w-52 bg-white shadow rounded-box p-2">
+                <li>
+                  <button onClick={() => handleCuisineSelect("")}>All</button>
+                </li>
 
-      {cuisineTypes.map((cuisine) => (
-  <li key={cuisine}>
-    <button
-      onClick={() => handleCuisineSelect(cuisine)}
-      className={`w-full text-left px-2 py-1 rounded ${
-        selectedCuisine === cuisine ? "bg-orange-100 font-semibold" : ""
-      }`}
-    >
-      {cuisine}
-    </button>
-  </li>
-))}
-
-    </ul>
-  )}
-</div>
-
+                {cuisineTypes.map((cuisine) => (
+                  <li key={cuisine}>
+                    <button
+                      onClick={() => handleCuisineSelect(cuisine)}
+                      className={`w-full text-left px-2 py-1 rounded ${
+                        selectedCuisine === cuisine
+                          ? "bg-orange-100 font-semibold"
+                          : ""
+                      }`}
+                    >
+                      {cuisine}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
 
           {/* Search */}
           <input
@@ -139,21 +137,39 @@ Swal.fire({
 
       {/* Recipe Grid */}
       {loading ? (
-        <div className="text-center mt-10"><span className="loading loading-spinner text-error"></span>Loading recipes...</div>
+        <div className="text-center mt-10">
+          <span className="loading loading-spinner text-error"></span>Loading
+          recipes...
+        </div>
       ) : filteredRecipes.length === 0 ? (
-        <p className="text-center text-lg lg:text-2xl text-red-600 mt-5" >No recipes found.</p>
-      ): (
+        <p className="text-center text-lg lg:text-2xl text-red-600 mt-5">
+          No recipes found.
+        </p>
+      ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mt-8">
           {filteredRecipes.map((recipe) => (
-            <div key={recipe._id} className="card bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all">
-              <img src={recipe.image} alt={recipe.title} className="w-full h-48 object-cover" />
+            <div
+              key={recipe._id}
+              className="card bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition-all"
+            >
+              <img
+                src={recipe.image}
+                alt={recipe.title}
+                className="w-full h-48 object-cover"
+              />
               <div className="p-4 space-y-2">
                 <h2 className="text-lg font-bold">{recipe.title}</h2>
                 <div className="flex items-center gap-4 text-sm text-gray-600">
-                  <span className="flex items-center gap-1"><FaClock /> {recipe.preparationTime} mins</span>
-                  <span className="flex items-center gap-1"><FaUtensils /> {recipe.cuisineType}</span>
+                  <span className="flex items-center gap-1">
+                    <FaClock /> {recipe.preparationTime} mins
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <FaUtensils /> {recipe.cuisineType}
+                  </span>
                 </div>
-                <p className="text-sm text-gray-500 font-medium">By: {recipe?.user?.name || "Unknown"}</p>
+                <p className="text-sm text-gray-500 font-medium">
+                  By: {recipe?.user?.name || "Unknown"}
+                </p>
 
                 {/* Categories */}
                 <div className="flex flex-wrap gap-1 mt-2">
@@ -174,12 +190,13 @@ Swal.fire({
                   >
                     Details
                   </Link>
-                 
 
-                  <button onClick={() => handleLike(recipe._id)} className="btn btn-sm bg-orange-100 text-orange-600">
+                  <button
+                    onClick={() => handleLike(recipe._id)}
+                    className="btn btn-sm bg-orange-100 text-orange-600"
+                  >
                     <FaHeart className="mr-1" /> {recipe.likeCount || 0}
                   </button>
-
                 </div>
               </div>
             </div>

@@ -6,6 +6,7 @@ import { FaArrowLeft } from "react-icons/fa";
 
 // Use your own local image or an external one
 import NotFoundImage from "../assets/3737258.jpg"; // <-- Make sure the image exists
+import { Helmet } from "react-helmet-async";
 
 const NotFound = () => {
   useEffect(() => {
@@ -14,6 +15,10 @@ const NotFound = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-tr from-indigo-100 to-pink-100 px-4 text-center">
+      
+       <Helmet>
+              <title>NotFound -Recipe Book</title>
+            </Helmet>
       <img
         src={NotFoundImage}
         alt="404 Not Found"

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
+import { Helmet } from "react-helmet-async";
 
 const Register = () => {
   const { registerWithEmailPassword, signInWithGoogle, updateUserProfile } =
@@ -59,6 +60,9 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 bg-orange-50">
+       <Helmet>
+              <title>Register -Recipe Book</title>
+            </Helmet>
       <div className="flex flex-col md:flex-row w-full max-w-5xl bg-white shadow-lg rounded-lg overflow-hidden">
         {/* Left Panel */}
         <div className="md:w-1/2 bg-gradient-to-b from-orange-400 to-orange-500 text-white flex flex-col justify-center items-center p-8">

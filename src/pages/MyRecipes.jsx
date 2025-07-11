@@ -7,7 +7,6 @@
 // import { Heart } from "lucide-react";
 // import { useParams } from "react-router-dom";
 
-
 // const MyRecipes = () => {
 //   const { id } = useParams();
 //   const { user } = useContext(AuthContext);
@@ -17,19 +16,16 @@
 //    const [likeCount, setLikeCount] = useState(0);
 //    const [liked, setLiked] = useState(false);
 //      const [isOwner, setIsOwner] = useState(false);
-      
 
 //   useEffect(() => {
 //     if (user?.email) {
 //       axios
-//         .get(`http://localhost:5000/recipes?email=${user.email}`)
+//         .get(`https://recipe-book-server-five.vercel.app/recipes?email=${user.email}`)
 //         .then((res) => setMyRecipes(res.data))
 //         .catch((err) => console.error("Failed to fetch recipes:", err))
 //         .finally(() => setLoading(false));
 //     }
 //   }, [user?.email]);
-
-
 
 //   const handleLike = async (recipe) => {
 //   if (!recipe || !recipe._id) {
@@ -47,7 +43,7 @@
 //   if (liked) return;
 
 //   try {
-//     await axios.patch(`http://localhost:5000/recipes/like/${recipe._id}`);
+//     await axios.patch(`https://recipe-book-server-five.vercel.app/recipes/like/${recipe._id}`);
 //     setLikeCount((prev) => prev + 1);
 //     setLiked(true);
 //     toast.success("Thanks for your interest!");
@@ -57,8 +53,6 @@
 //   }
 // };
 
-  
-
 //   const handleDelete = async (id) => {
 //     const confirm = window.confirm(
 //       "Are you sure you want to delete this recipe?"
@@ -66,17 +60,12 @@
 //     if (!confirm) return;
 
 //     try {
-//       await axios.delete(`http://localhost:5000/recipes/${id}`);
+//       await axios.delete(`https://recipe-book-server-five.vercel.app/recipes/${id}`);
 //       setMyRecipes(myRecipes.filter((r) => r._id !== id));
 //     } catch (err) {
 //       console.error("Delete failed:", err);
 //     }
 //   };
-
-
-
-
-
 
 //   const handleUpdate = async (e) => {
 //   e.preventDefault();
@@ -94,7 +83,7 @@
 
 //   try {
 //     await axios.put(
-//       `http://localhost:5000/recipes/${editingRecipe._id}`,
+//       `https://recipe-book-server-five.vercel.app/recipes/${editingRecipe._id}`,
 //       updatedRecipe
 //     );
 //     setMyRecipes((prev) =>
@@ -113,7 +102,6 @@
 //   }
 // };
 
-
 //   // const handleUpdate = async (e) => {
 //   //   e.preventDefault();
 //   //   const form = e.target;
@@ -127,7 +115,7 @@
 
 //   //   try {
 //   //     await axios.put(
-//   //       `http://localhost:5000/recipes/${editingRecipe._id}`,
+//   //       `https://recipe-book-server-five.vercel.app/recipes/${editingRecipe._id}`,
 //   //       updatedRecipe
 //   //     );
 //   //     setMyRecipes((prev) =>
@@ -190,12 +178,9 @@
 //         </p>
 //       </div>
 
-
 //                 <p>Preparaion Time: {recipe.preparationTime} mins</p>
 //                 <p>Cuisine: {recipe.cuisineType}</p>
 
-
-                
 //       {recipe.categories?.length > 0 && (
 //         <div className="mt-4">
 //           <h4 className="font-semibold mb-2">Categories:</h4>
@@ -224,7 +209,7 @@
 //                     className="btn btn-sm btn-warning"
 //                     onClick={() => setEditingRecipe(recipe)}
 //                   >
-                
+
 //                     Update
 //                   </button>
 //                   <button
@@ -241,7 +226,7 @@
 //       )}
 
 //       {/* Update Modal */}
-// {/* 
+// {/*
 //       {editingRecipe && (
 //         <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
 //           <motion.div
@@ -320,7 +305,6 @@
 //           </motion.div>
 //         </div>
 //       )} */}
-
 
 //       {editingRecipe && (
 //   <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
@@ -450,12 +434,6 @@
 
 // export default MyRecipes;
 
-
-
-
-
-
-
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
@@ -464,6 +442,7 @@ import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { Heart } from "lucide-react";
 import { Link, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const MyRecipes = () => {
   const { id } = useParams();
@@ -477,7 +456,9 @@ const MyRecipes = () => {
   useEffect(() => {
     if (user?.email) {
       axios
-        .get(`http://localhost:5000/recipes?email=${user.email}`)
+        .get(
+          `https://recipe-book-server-five.vercel.app/recipes?email=${user.email}`
+        )
         .then((res) => setMyRecipes(res.data))
         .catch((err) => console.error("Failed to fetch recipes:", err))
         .finally(() => setLoading(false));
@@ -499,7 +480,9 @@ const MyRecipes = () => {
     if (liked) return;
 
     try {
-      await axios.patch(`http://localhost:5000/recipes/like/${recipe._id}`);
+      await axios.patch(
+        `https://recipe-book-server-five.vercel.app/recipes/like/${recipe._id}`
+      );
       setLikeCount((prev) => prev + 1);
       setLiked(true);
       toast.success("Thanks for your interest!");
@@ -510,11 +493,15 @@ const MyRecipes = () => {
   };
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm("Are you sure you want to delete this recipe?");
+    const confirm = window.confirm(
+      "Are you sure you want to delete this recipe?"
+    );
     if (!confirm) return;
 
     try {
-      await axios.delete(`http://localhost:5000/recipes/${id}`);
+      await axios.delete(
+        `https://recipe-book-server-five.vercel.app/recipes/${id}`
+      );
       setMyRecipes(myRecipes.filter((r) => r._id !== id));
     } catch (err) {
       console.error("Delete failed:", err);
@@ -532,12 +519,14 @@ const MyRecipes = () => {
       cuisineType: form.cuisineType.value,
       ingredients: form.ingredients.value.split(",").map((i) => i.trim()),
       instructions: form.instructions.value.split(",").map((i) => i.trim()),
-      categories: Array.from(form.categories.selectedOptions).map((o) => o.value),
+      categories: Array.from(form.categories.selectedOptions).map(
+        (o) => o.value
+      ),
     };
 
     try {
       await axios.put(
-        `http://localhost:5000/recipes/${editingRecipe._id}`,
+        `https://recipe-book-server-five.vercel.app/recipes/${editingRecipe._id}`,
         updatedRecipe
       );
       setMyRecipes((prev) =>
@@ -559,11 +548,17 @@ const MyRecipes = () => {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h2 className="text-3xl font-bold mb-6">My Recipes ({myRecipes.length})</h2>
+      <Helmet>
+        <title>MyRecipes -Recipe Book</title>
+      </Helmet>
+      <h2 className="text-3xl font-bold mb-6">
+        My Recipes ({myRecipes.length})
+      </h2>
 
       {loading ? (
         <div className="text-center mt-10">
-          <span className="loading loading-spinner text-error"></span> Loading recipes...
+          <span className="loading loading-spinner text-error"></span> Loading
+          recipes...
         </div>
       ) : myRecipes.length === 0 ? (
         <p className="text-center text-lg lg:text-2xl text-red-600">
@@ -627,14 +622,11 @@ const MyRecipes = () => {
                     <Heart size={18} className={liked ? "text-red-500" : ""} />
                     {likeCount}
                   </button>
-                
-                  {myRecipes.map((item) => (
-  <div key={item._id}>
-    <Link to={`/update-recipe/${item._id}`}>
-      <button className="btn btn-sm btn-warning">Update</button>
-    </Link>
-  </div>
-))}
+
+                  <Link to={`/update-recipe/${recipe._id}`}>
+                    <button className="btn btn-sm btn-warning">Update</button>
+                  </Link>
+
                   <button
                     className="btn btn-sm btn-error"
                     onClick={() => handleDelete(recipe._id)}
@@ -647,138 +639,6 @@ const MyRecipes = () => {
           ))}
         </div>
       )}
-
-     
-      {/* {editingRecipe && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
-          <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
-          >
-            <h3 className="text-xl font-bold mb-4 text-center text-blue-600">
-              ✏️ Update Recipe
-            </h3>
-            <form onSubmit={handleUpdate} className="space-y-4">
-              <div>
-                <label className="label">Title</label>
-                <input
-                  name="title"
-                  defaultValue={editingRecipe.title}
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="label">Image URL</label>
-                <input
-                  name="image"
-                  defaultValue={editingRecipe.image}
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="label">Preparation Time (mins)</label>
-                <input
-                  name="preparationTime"
-                  type="number"
-                  defaultValue={editingRecipe.preparationTime}
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="label">Cuisine Type</label>
-                <select
-                  name="cuisineType"
-                  defaultValue={editingRecipe.cuisineType}
-                  className="select select-bordered w-full"
-                  required
-                >
-                  {["Chinese", "Italian", "Mexican", "Indian", "Thai", "French"].map(
-                    (type) => (
-                      <option key={type} value={type}>
-                        {type}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-
-              <div>
-                <label className="label">Ingredients (comma-separated)</label>
-                <input
-                  name="ingredients"
-                  defaultValue={
-                    Array.isArray(editingRecipe.ingredients)
-                      ? editingRecipe.ingredients.join(", ")
-                      : editingRecipe.ingredients || ""
-                  }
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="label">Instructions (comma-separated)</label>
-                <input
-                  name="instructions"
-                  defaultValue={
-                    Array.isArray(editingRecipe.instructions)
-                      ? editingRecipe.instructions.join(", ")
-                      : editingRecipe.instructions || ""
-                  }
-                  className="input input-bordered w-full"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="label">Categories</label>
-                <select
-                  name="categories"
-                  multiple
-                  className="select select-bordered w-full"
-                  defaultValue={editingRecipe.categories}
-                >
-                  {["Breakfast", "Lunch", "Dinner", "Dessert", "Vegan", "Gluten-Free"].map(
-                    (cat) => (
-                      <option key={cat} value={cat}>
-                        {cat}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-
-          
-
-              <div className="flex justify-end gap-3 pt-4">
-                <button
-                  type="button"
-                  onClick={() => setEditingRecipe(null)}
-                  className="btn btn-outline"
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Save Changes
-                </button>
-              </div>
-            </form>
-          </motion.div>
-        </div>
-      )} */}
-
-
-
-
     </div>
   );
 };

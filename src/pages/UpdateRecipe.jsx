@@ -4,6 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
 import { FaUpload } from "react-icons/fa";
+import { Helmet } from "react-helmet-async";
 
 const cuisineTypes = ["Italian", "Mexican", "Indian", "Chinese", "Others"];
 const categories = ["Breakfast", "Lunch", "Dinner", "Dessert", "Vegan"];
@@ -25,7 +26,9 @@ const UpdateRecipe = () => {
   useEffect(() => {
     const fetchRecipe = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/recipes/${id}`);
+        const res = await axios.get(
+          `https://recipe-book-server-five.vercel.app/recipes/${id}`
+        );
         const recipe = res.data;
 
         setFormData({
@@ -76,7 +79,7 @@ const UpdateRecipe = () => {
 
     try {
       const res = await axios.put(
-        `http://localhost:5000/recipes/${id}`,
+        `https://recipe-book-server-five.vercel.app/recipes/${id}`,
         updatedRecipe
       );
       if (res.data.modifiedCount > 0) {
@@ -91,6 +94,9 @@ const UpdateRecipe = () => {
 
   return (
     <div className="max-w-6xl mx-auto my-5">
+      <Helmet>
+        <title>UpdateRecipe -Recipe Book</title>
+      </Helmet>
       {/* Header */}
       <div className="bg-gradient-to-r from-blue-500 to-blue-700 p-6 rounded-t-lg text-center text-white shadow-lg">
         <h2 className="text-3xl font-bold">Update Recipe</h2>

@@ -1,9 +1,9 @@
-
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 import axios from "axios";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet-async";
 
 const cuisineTypes = ["Italian", "Mexican", "Indian", "Chinese", "Others"];
 const categories = ["Breakfast", "Lunch", "Dinner", "Dessert", "Vegan"];
@@ -50,13 +50,15 @@ const AddRecipe = () => {
     };
 
     try {
-      const res = await axios.post("http://localhost:5000/recipes", recipe);
+      const res = await axios.post(
+        "https://recipe-book-server-five.vercel.app/recipes",
+        recipe
+      );
       if (res.data?.insertedId) {
-    
         Swal.fire({
           title: "Recipe added successfully!",
           icon: "success",
-          draggable: true
+          draggable: true,
         });
         setFormData({
           image: "",
@@ -76,11 +78,19 @@ const AddRecipe = () => {
 
   return (
     <div className="max-w-6xl mx-auto my-5">
+      <Helmet>
+        <title>AddRecipe -Recipe Book</title>
+      </Helmet>
       {/* Header */}
       <div className="bg-gradient-to-r from-orange-400 to-orange-600 p-6 rounded-t-lg text-center text-white shadow-lg">
         <h2 className="text-3xl font-bold">Add New Recipe</h2>
         <p className="mt-1">Share your culinary masterpiece with the world</p>
-        <p className="text-sm">Posting as: <span className="font-semibold text-blue-600">{user?.displayName || "Guest"}</span></p>
+        <p className="text-sm">
+          Posting as:{" "}
+          <span className="font-semibold text-blue-600">
+            {user?.displayName || "Guest"}
+          </span>
+        </p>
       </div>
 
       {/* Form */}
@@ -91,7 +101,11 @@ const AddRecipe = () => {
         {/* Image Preview */}
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center text-gray-500">
           {formData.image ? (
-            <img src={formData.image} alt="Recipe preview" className="mx-auto max-h-60 rounded-md object-cover" />
+            <img
+              src={formData.image}
+              alt="Recipe preview"
+              className="mx-auto max-h-60 rounded-md object-cover"
+            />
           ) : (
             <>
               <svg
@@ -155,7 +169,9 @@ const AddRecipe = () => {
               className="textarea textarea-bordered w-full h-32"
               required
             />
-            <p className="text-xs text-gray-500 mt-1">List each ingredient on a new line</p>
+            <p className="text-xs text-gray-500 mt-1">
+              List each ingredient on a new line
+            </p>
           </div>
           <div>
             <label className="label font-semibold">📝 Instructions</label>

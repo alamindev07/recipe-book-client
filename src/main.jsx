@@ -10,13 +10,15 @@ import router from "./routes/Routes.jsx";
 import { Toaster } from "react-hot-toast";
 import { ToastContainer } from "react-toastify";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
+import { HelmetProvider } from "react-helmet-async";
 
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     
    
-<AuthProvider>
+<HelmetProvider>
+   <AuthProvider>
   <ThemeProvider>
   <RouterProvider router={router} />
       <Toaster position="top-right" reverseOrder={false} />
@@ -24,6 +26,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   </ThemeProvider>
     
     </AuthProvider>
+  </HelmetProvider>
    
   </React.StrictMode>
 );

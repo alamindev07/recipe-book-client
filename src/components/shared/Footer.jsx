@@ -48,10 +48,10 @@ const Footer = () => {
             <button className="btn btn-primary btn-sm w-full">Subscribe</button>
           </div>
           <div className="flex gap-4 mt-4 text-xl">
-            <a href="https://facebook.com/babu.al.amin.07" className="hover:text-blue-600"><FaFacebookF /></a>
-            <a href="https://twitter.com" className="hover:text-blue-500"><FaTwitter /></a>
-            <a href="https://instagram.com" className="hover:text-pink-500"><FaInstagram /></a>
-            <a href="https://linkedin.com" className="hover:text-blue-700"><FaLinkedin /></a>
+            <a href="https://facebook.com/babu.al.amin.07" className="hover:text-blue-600" target="_blank"><FaFacebookF /></a>
+            <a href="https://twitter.com" className="hover:text-blue-500" target="_blank"><FaTwitter /></a>
+            <a href="https://instagram.com" className="hover:text-pink-500" target="_blank"><FaInstagram /></a>
+            <a href="https://linkedin.com" className="hover:text-blue-700" target="_blank"><FaLinkedin /></a>
           </div>
         </div>
       </div>
