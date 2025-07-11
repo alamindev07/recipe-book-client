@@ -4,8 +4,8 @@ import "aos/dist/aos.css";
 import { useEffect } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 
-// Use your own local image or an external one
-import NotFoundImage from "../assets/3737258.jpg"; // <-- Make sure the image exists
+
+import NotFoundImage from "../assets/3737258.jpg"; 
 import { Helmet } from "react-helmet-async";
 
 const NotFound = () => {

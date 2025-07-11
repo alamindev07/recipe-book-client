@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { motion } from "framer-motion";
 import { Heart } from "lucide-react";
-import { AuthContext } from "../context/AuthContext"; // Make sure this exists
+import { AuthContext } from "../context/AuthContext"; 
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
 
@@ -16,7 +16,7 @@ const RecipeDetails = () => {
   const [isOwner, setIsOwner] = useState(false);
 
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext); // Assuming you have AuthContext
+  const { user } = useContext(AuthContext); 
 
   useEffect(() => {
     axios
